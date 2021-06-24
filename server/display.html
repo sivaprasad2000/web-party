@@ -4,8 +4,14 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Web-party-server</title>
+    <style>
+        #screen {
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
+    <img width="90%" id="screen" />
     <script>
         window.onload = function () {
             var room = prompt("Enter the room ID to join");
@@ -14,6 +20,13 @@
                 document.write("<h1>Room ID is mandatory</h1>");
                 return;
             }
+
+            socket = io.connect('http://192.168.18.6:5000');
+
+            socket.emit('join-message', room);
+            socket.on('screen-data', function (message) {
+                $("#screen").attr("src", "data:image/png;base64, " + message );
+            })
         }
     </script>
 

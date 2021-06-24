@@ -11,6 +11,15 @@ io.on('connection', (socket)=> {
         socket.join(roomID);
         console.log("User joined in room" + roomID);
     })
+
+    socket.on('screen-data', function (data) {
+        data = JSON.parse(data);
+
+        var room = data.roomId;
+        var img  = data.img;
+
+        socket.broadcast.to(room).emit('screen-data', img);
+    })
 })
 
 var server_port = process.env.YOUR_PORT || process.env.PORT || 5000;
